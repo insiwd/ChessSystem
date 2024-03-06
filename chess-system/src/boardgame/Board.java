@@ -6,6 +6,9 @@ public class Board {
     private Piece[][] pieces;
 
     public Board(int rows, int columns) {
+        if (rows < 1 || columns < 1) {
+            throw new BoardException("Error creating board: there must be at least 1 row and 1 column");
+        }
         this.rows = rows;
         this.columns = columns;
         pieces = new Piece[rows][columns];
@@ -15,16 +18,8 @@ public class Board {
         return rows;
     }
 
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
-
     public int getColumns() {
         return columns;
-    }
-
-    public void setColumns(int columns) {
-        this.columns = columns;
     }
 
     public Piece piece(int row, int column) {
@@ -35,11 +30,24 @@ public class Board {
         return pieces[position.getRow()][position.getColumn()];
     }
 
-    //colocando peça no tabuleiro
+    // colocando peça no tabuleiro
     // atribuindo a peça à matriz
     public void placePiece(Piece piece, Position position) {
         pieces[position.getRow()][position.getColumn()] = piece;
         piece.position = position;
     }
 
+    private boolean positionExists(int row, int column) {
+        return row >= 0 && row < rows && column >= 0 && column < columns;
+    }
+
+    public boolean positionExists(Position position) {
+        return positionExists(position.getRow(), position.getColumn());
+    }
+
+    public boolean thereIsAPiece(Position position) {
+        // testando se tem peça nessa posição
+        // se a peça for diferente de nulo, existe uma peça nessa posição
+        return piece(position) != null;
+    }
 }
